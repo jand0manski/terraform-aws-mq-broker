@@ -71,8 +71,6 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_memory" {
 
   }
 
-}
-
 resource "aws_cloudwatch_metric_alarm" "mq_broker_cpu" {
   count = var.create_alarm ? 1:0
   alarm_name                = "${var.name}-HighCpuUsed-RabbitBroker"
