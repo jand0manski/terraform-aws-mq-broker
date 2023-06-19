@@ -43,7 +43,6 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_memory" {
 
   metric_query {
     id          = "m1"
-    return_data = "true"
     metric {
       metric_name = "RabbitMQMemUsed"
       namespace   = "AWS/AmazonMQ"
@@ -57,7 +56,6 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_memory" {
 
   metric_query {
     id          = "m2"
-    return_data = "true"
     metric {
       metric_name = "RabbitMQMemLimit"
       namespace   = "AWS/AmazonMQ"
