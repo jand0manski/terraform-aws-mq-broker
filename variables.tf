@@ -34,7 +34,7 @@ variable "sns_topic_arn" {
 }
 
 variable "disk_threshold" {
-  default = 80
+  default = 20
 }
 variable "cpu_threshold" {
   default = 80

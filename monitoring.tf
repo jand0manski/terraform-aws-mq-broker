@@ -2,19 +2,47 @@
 resource "aws_cloudwatch_metric_alarm" "mq_broker_disk_space" {
   count = var.create_alarm ? 1:0
   alarm_name                = "${var.name}-HighDiskUsed-RabbitBroker"
-  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  comparison_operator       = "LessThanOrEqualToThreshold"
   evaluation_periods        = "3"
-  metric_name               = "StorePercentUsage"
-  namespace                 = "AWS/AmazonMQ"
-  period                    = "120"
-  statistic                 = "Average"
   threshold                 = var.disk_threshold
   alarm_description         = "This metric monitors high disk used"
   insufficient_data_actions = []
   actions_enabled = true
   alarm_actions = [var.sns_topic_arn]
-  dimensions = {
-    "Broker"    = var.name
+
+  metric_query {
+    id          = "e1"
+    expression  = "m1/m2*100"
+    label       = "MemoryUsed"
+    return_data = "true"
+	period      = 120
+  }
+
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = "RabbitMQDiskFree"
+      namespace   = "AWS/AmazonMQ"
+      period      = 120
+      stat        = "Average"
+      dimensions = {
+        "Broker"    = var.name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "m2"
+    metric {
+      metric_name = "RabbitMQDiskFreeLimit"
+      namespace   = "AWS/AmazonMQ"
+      period      = 120
+      stat        = "Average"
+      dimensions = {
+        "Broker"    = var.name
+      }
+    }
   }
 }
 
