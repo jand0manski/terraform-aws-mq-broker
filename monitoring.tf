@@ -24,18 +24,25 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_memory" {
   alarm_name                = "${var.name}-HighMemoryUsed-RabbitBroker"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "3"
-  metric_name               = "RabbitMQMemUsed/RabbitMQMemLimit"
-  namespace                 = "AWS/AmazonMQ"
-  period                    = "120"
-  statistic                 = "Average"
   threshold                 = var.memory_threshold
   alarm_description         = "HighMemoryUsed-Broker"
   insufficient_data_actions = []
   actions_enabled = true
   alarm_actions = [var.sns_topic_arn]
-  dimensions = {
+
+
+  metric_query {
+    id          = "m1"
+    expression  = "RabbitMQMemUsed/RabbitMQMemLimit*100"
+	namespace                 = "AWS/AmazonMQ"
+    label       = "MemoryUsed"
+    return_data = "true"
+	dimensions = {
     "Broker"    = var.name
+  	}
   }
+
+
 }
 
 resource "aws_cloudwatch_metric_alarm" "mq_broker_cpu" {
