@@ -22,6 +22,27 @@ variable "engine_type" {
   default     = "ActiveMQ"
 }
 
+
+variable "create_alarm" {
+  type = bool
+  default = false
+}
+
+variable "sns_topic_arn" {
+  type = string
+  default = ""
+}
+
+variable "disk_threshold" {
+  default = 80
+}
+variable "cpu_threshold" {
+  default = 80
+}
+variable "memory_threshold" {
+  default = 80
+}
+
 variable "engine_version" {
   type        = string
   description = "The version of the broker engine. See https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-engine.html for more details"
