@@ -12,8 +12,8 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_disk_space" {
 
   metric_query {
     id          = "e1"
-    expression  = "m1/m2*100"
-    label       = "MemoryUsed"
+    expression  = "m1/m2"
+    label       = "DiskUsed"
     return_data = "true"
 	period      = 120
   }
