@@ -25,6 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_memory" {
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "3"
   threshold                 = var.memory_threshold
+
   alarm_description         = "HighMemoryUsed-Broker"
   insufficient_data_actions = []
   actions_enabled = true
@@ -32,16 +33,43 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_memory" {
 
 
   metric_query {
-    id          = "m1"
-    expression  = "RabbitMQMemUsed/RabbitMQMemLimit*100"
-	namespace                 = "AWS/AmazonMQ"
+    id          = "e1"
+    expression  = "m1/m2*100"
     label       = "MemoryUsed"
     return_data = "true"
-	dimensions = {
-    "Broker"    = var.name
-  	}
+	period      = 120
   }
 
+
+  metric_query {
+    id          = "m1"
+    return_data = "true"
+    metric {
+      metric_name = "RabbitMQMemUsed"
+      namespace   = "AWS/AmazonMQ"
+      period      = 120
+      stat        = "Average"
+      dimensions = {
+        "Broker"    = var.name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "m2"
+    return_data = "true"
+    metric {
+      metric_name = "RabbitMQMemLimit"
+      namespace   = "AWS/AmazonMQ"
+      period      = 120
+      stat        = "Average"
+      dimensions = {
+        "Broker"    = var.name
+      }
+    }
+  }
+
+  }
 
 }
 
