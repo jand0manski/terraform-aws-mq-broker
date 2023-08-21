@@ -34,12 +34,15 @@ variable "sns_topic_arn" {
 }
 
 variable "disk_threshold" {
-  default = 20
+  type = number
+  default = 2
 }
 variable "cpu_threshold" {
+  type = number
   default = 80
 }
 variable "memory_threshold" {
+  type = number
   default = 80
 }
 
