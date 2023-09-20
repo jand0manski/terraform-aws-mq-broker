@@ -207,3 +207,7 @@ variable "allowed_ingress_ports" {
     EOT
   default     = []
 }
+
+variable "dlq_description" {
+  type = string
+}

@@ -117,3 +117,23 @@ resource "aws_cloudwatch_metric_alarm" "mq_broker_cpu" {
 	 "Broker"    = var.name
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "dlq_broker" {
+  count = var.create_alarm ? 1:0
+  alarm_name                = "${var.name}-dlq"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = "3"
+  metric_name               = "MessageCount"
+  namespace                 = "AWS/AmazonMQ"
+  period                    = "120"
+  statistic                 = "Sum"
+  threshold                 = 1
+  alarm_description         = var.dlq_description
+  ok_actions = [var.sns_topic_arn]
+  insufficient_data_actions=[var.sns_topic_arn]
+  actions_enabled = true
+  alarm_actions = [var.sns_topic_arn]
+  dimensions = {
+	 "Broker"    = var.name
+  }
+}
