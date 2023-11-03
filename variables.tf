@@ -3,7 +3,10 @@ variable "apply_immediately" {
   description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
   default     = false
 }
-
+variable "extra_alert_desc" {
+  type = string
+  default = ""
+}
 variable "auto_minor_version_upgrade" {
   type        = bool
   description = "Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions"
